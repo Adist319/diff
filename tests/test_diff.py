@@ -141,3 +141,14 @@ def test_generate_diff_multiple_additions_removals():
     assert generate_diff(lines1, lines2) == expected_diff
 
 
+def test_generate_diff_whitespace_changes():
+    lines1 = ["No spaces", "  Two spaces", "One space "]
+    lines2 = ["No spaces", " Two spaces", "One space"]
+    expected_diff = [
+        "<   Two spaces",   
+        "< One space ",     
+        ">  Two spaces",    
+        "> One space"       
+    ]
+    assert generate_diff(lines1, lines2) == expected_diff
+
