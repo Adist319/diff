@@ -21,24 +21,31 @@ def longest_common_subsequence(str1, str2):
 
 def longest_common_subsequence_lines(lines1, lines2):
     m, n = len(lines1), len(lines2)
-    # Initialize the DP table with empty lists
-    dp = [[[] for _ in range(n + 1)] for _ in range(m + 1)]
+    # Initialize the DP table with zeros
+    dp = [[0]*(n+1) for _ in range(m+1)]
 
-    # Build the table in bottom-up manner
+    # Fill the DP table
     for i in range(m):
         for j in range(n):
             if lines1[i] == lines2[j]:
-                # If the current lines match, append the line to the LCS up to i and j
-                dp[i + 1][j + 1] = dp[i][j] + [lines1[i]]
+                dp[i+1][j+1] = dp[i][j] + 1
             else:
-                # If they don't match, take the longer of the two possible previous subsequences
-                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j], key=len)
+                dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j])
 
-    return dp[m][n]
+    # Reconstruct the LCS by backtracking
+    lcs = []
+    i, j = m, n
+    while i > 0 and j > 0:
+        if lines1[i-1] == lines2[j-1]:
+            lcs.insert(0, lines1[i-1])
+            i -= 1
+            j -= 1
+        elif dp[i-1][j] >= dp[i][j-1]:
+            i -= 1
+        else:
+            j -= 1
 
-
-
-# src/ccdiff.py
+    return lcs
 
 def generate_diff(lines1, lines2):
     lcs = longest_common_subsequence_lines(lines1, lines2)
@@ -75,17 +82,21 @@ def main():
     args = parser.parse_args()
 
     try:
-        with open(args.original_file, 'r') as f:
-            lines1 = f.read().splitlines()
-        with open(args.new_file, 'r') as f:
-            lines2 = f.read().splitlines()
+        with open(args.original_file, 'r', encoding='utf-8') as f:
+            lines1 = f.read().replace('\r\n', '\n').splitlines()
+        with open(args.new_file, 'r', encoding='utf-8') as f:
+            lines2 = f.read().replace('\r\n', '\n').splitlines()
     except FileNotFoundError as e:
         print(f"Error: {e}")
+        return
+    except IOError as e:
+        print(f"IO Error: {e}")
         return
 
     diffs = generate_diff(lines1, lines2)
     for line in diffs:
         print(line)
+
 
 if __name__ == "__main__":
     main()
