@@ -1,1 +1,2 @@
-An implementation of the diff command from Unix.
+CCDiff: A Custom Diff Tool\
+CCDiff is a custom implementation of the classic Unix diff utility, built in Python. It allows users to compare the contents of two files and generate a list of differences, facilitating easy tracking of changes. Whether you're a developer looking to integrate a diff tool into your workflow or someone interested in understanding the mechanics behind file comparison, CCDiff offers a robust and extensible solution.
