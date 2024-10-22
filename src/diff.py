@@ -21,16 +21,21 @@ def longest_common_subsequence(str1, str2):
 
 def longest_common_subsequence_lines(lines1, lines2):
     m, n = len(lines1), len(lines2)
-    dp = [["" for _ in range(n + 1)] for _ in range(m + 1)]
+    # Initialize the DP table with empty lists
+    dp = [[[] for _ in range(n + 1)] for _ in range(m + 1)]
 
+    # Build the table in bottom-up manner
     for i in range(m):
         for j in range(n):
             if lines1[i] == lines2[j]:
+                # If the current lines match, append the line to the LCS up to i and j
                 dp[i + 1][j + 1] = dp[i][j] + [lines1[i]]
             else:
+                # If they don't match, take the longer of the two possible previous subsequences
                 dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j], key=len)
 
     return dp[m][n]
+
 
 
 # src/ccdiff.py

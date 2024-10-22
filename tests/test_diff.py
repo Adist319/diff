@@ -1,7 +1,12 @@
 # tests/test_ccdiff.py
 
 import pytest
-from src.diff import longest_common_subsequence, longest_common_subsequence_lines
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.diff import longest_common_subsequence, longest_common_subsequence_lines, generate_diff
 
 def test_lcs_identical_strings():
     assert longest_common_subsequence("ABCDEF", "ABCDEF") == "ABCDEF"
